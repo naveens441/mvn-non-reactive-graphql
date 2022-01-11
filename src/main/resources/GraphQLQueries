@@ -1,0 +1,125 @@
+---------------------------------------------------
+----------------
+{
+  talks: allTalks {
+    id
+    my_title: title
+    talk_speaker:speakers {
+      name
+      twitter
+    }
+    description
+  }
+}
+
+-------------------------------------
+query MyCAll{
+  talks: allTalks {
+    id
+    my_title: title
+    talk_speaker:speakers {
+      name
+      twitter
+    }
+    description
+  }
+}
+--------------------------------------------
+
+query{
+  talks: allTalks {
+    id
+    my_title: title
+    talk_speaker:speakers @include(if:false) {
+      name
+      twitter
+    }
+    description
+  }
+}
+----------------------------------------------------
+
+query MyCall($withSpeaker:Boolean){
+  talks: allTalks {
+    id
+    my_title: title
+    talk_speaker:speakers @include(if:false) {
+      name
+      twitter
+    }
+    description
+  }
+}
+
+in query variables:
+{
+    "$withSpeaker":true
+}
+-------------------------------------------
+
+query{
+  allAll {
+    ... on Speaker {
+      speaker_id: id
+      twitter
+    }
+    ... on Talk {
+      talk_id: id
+      title
+    }
+  }
+}
+-----------------------------------------
+{
+  allAll {
+    __typename
+    ... on Speaker {
+      speaker_id: id
+      twitter
+    }
+    ... on Talk {
+      talk_id: id
+      title
+    }
+  }
+}
+--------------------------------
+
+{
+  allAll {
+    __typename
+    ... on Speaker {
+      speaker_id: id
+      twitter
+    }
+   ... talk_fragment
+  }
+}
+
+---------------------------------------
+
+mutation {
+  addSpeaker(name: "newName") {
+    id
+    name
+    twitter
+  }
+}
+
+----------------------------------------------
+mutation {
+  addSpeaker(speaker:{ name:"speaker3",
+  twitter:"@speaker3"}) {
+    id
+    name
+    twitter
+  }
+}
+
+
+fragment talk_fragment on Talk{
+   ... on Talk {
+      talk_id: id
+      title
+    }
+}
